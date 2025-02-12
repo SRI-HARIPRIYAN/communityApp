@@ -3,7 +3,8 @@ import JoinRequest from "../models/requestModel.js";
 import User from "../models/userModel.js";
 import { io, onlineUsers } from "../socket/socket.js";
 import logger from "../utils/logger.js";
-
+import Application from "../models/applicationModel.js";
+import { addEmailToQueue } from "../queues/emailQueue.js";
 export const createGroup = async (req, res) => {
 	const { name, eventId, isHead } = req.body;
 
@@ -207,6 +208,24 @@ export const approveRequest = async (req, res) => {
 					$push: { groups: group._id },
 				}),
 			]);
+			let application = await Application.findOne({
+				eventId: group.eventId,
+				userId: joinRequest.user,
+			});
+			if (application) {
+				application.appliedTo.push(group.name);
+				const updatedApplication = await application.save();
+				logger.info("Updated application: " + updatedApplication);
+				await addEmailToQueue(application._id);
+			} else {
+				const newApplication = await Application.create({
+					eventId: group.eventId,
+					userId: joinRequest.user,
+					appliedTo: [group.name],
+				});
+				logger.info("Updated application: " + newApplication);
+				await addEmailToQueue(newApplication._id);
+			}
 		} else {
 			await joinRequest.save();
 		}

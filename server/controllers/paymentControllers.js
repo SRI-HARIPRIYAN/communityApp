@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import Payment from "../models/paymentModel.js";
 import Group from "../models/groupModel.js";
 import logger from "../utils/logger.js";
+import Application from "../models/applicationModel.js";
+import { addEmailToQueue } from "../queues/emailQueue.js";
 dotenv.config();
 
 const razorpayInstance = new Razorpay({
@@ -19,6 +21,14 @@ export const createOrder = async (req, res) => {
 			receipt: "receipt#1",
 			payment_capture: 1,
 		};
+		const group = await Group.findById(req.body.groupId);
+		logger.info(group.toString());
+		console.log("Groups members: " + group.members.length + " limit: " + group.limit);
+		if (group.members.length + 1 > group.limit) {
+			return res
+				.status(400)
+				.json({ message: "Participants limit reached!", error: "Participants limit reached!" });
+		}
 		const order = await razorpayInstance.orders.create(options);
 		res.status(200).json(order);
 	} catch (error) {
@@ -57,6 +67,20 @@ export const verifyPayment = async (req, res) => {
 			});
 
 			const group = await Group.findById(groupId);
+			let application = await Application.findOne({ eventId, userId });
+			if (application) {
+				application.appliedTo.push(group.name);
+				const updatedApplication = await application.save();
+				logger.info("Updated application: " + updatedApplication);
+			} else {
+				application = await Application.create({
+					eventId,
+					userId,
+					appliedTo: [group.name],
+				});
+				logger.info("Updated application: " + application);
+			}
+			await addEmailToQueue(application._id);
 
 			await payment.save();
 			res.status(200).json({ message: "Payment verified successfully" });

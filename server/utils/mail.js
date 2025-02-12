@@ -18,7 +18,6 @@ export const sendEmailWithQRCode = async (applicationId) => {
 		const application = await Application.findById(applicationId)
 			.populate("userId", "userName email")
 			.populate("eventId", "title");
-		console.log(application);
 		const qrCodeBase64 = await generateQRCode(
 			`${application.eventId._id.toString()}==${application._id}`
 		);
@@ -47,7 +46,6 @@ export const sendEmailWithQRCode = async (applicationId) => {
 				},
 			],
 		};
-
 		await transporter.sendMail(mailOptions);
 		console.log(`Email sent to ${application.userId.email}`);
 	} catch (error) {

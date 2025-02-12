@@ -13,6 +13,7 @@ import PaymentPage from "./screen/PaymentPage";
 import EditEvents from "./screen/EditEvents";
 import RequestComponent from "./components/RequestComponent";
 import Request from "./screen/Request";
+import About from "./screen/About";
 
 const App = () => {
 	return (
@@ -31,6 +32,7 @@ const App = () => {
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/events/:eventId/attendance/:title" element={<Attendancepage />} />
 					<Route path="/payments/:eventId" element={<PaymentPage />} />
+					<Route path="/about" element={<About />} />
 					<Route path="*" element={<div>Not Found</div>} />
 				</Routes>
 			</div>

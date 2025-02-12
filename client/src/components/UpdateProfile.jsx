@@ -2,7 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { updateProfile } from "../services/api";
 import { toast } from "react-toastify";
+import { useAuth } from "../hooks/useAuth";
 const UpdateProfile = ({ user, close }) => {
+	const { setUser } = useAuth();
 	const [Profile, setProfile] = useState({
 		userName: user.userName,
 		email: user.email,
@@ -23,10 +25,10 @@ const UpdateProfile = ({ user, close }) => {
 		}
 		mutate(Profile, {
 			onSuccess: (data) => {
+				setUser(data?.user);
 				toast.success(data?.message);
 				close();
 			},
-			
 		});
 	};
 	const handleChange = (e) => {
@@ -34,7 +36,6 @@ const UpdateProfile = ({ user, close }) => {
 		setProfile((prev) => ({ ...prev, [name]: value }));
 	};
 
-	
 	return (
 		<div
 			id="profileBox"
@@ -83,9 +84,7 @@ const UpdateProfile = ({ user, close }) => {
 						/>
 					</div>
 					<div className="flex flex-col gap-2">
-						<label htmlFor="confirmPassword">
-							Re-enter password
-						</label>
+						<label htmlFor="confirmPassword">Re-enter password</label>
 						<input
 							id="confirmPassword"
 							type="text"
