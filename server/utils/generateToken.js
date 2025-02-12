@@ -5,8 +5,8 @@ const generateToken = (res, userId) => {
 	});
 	res.cookie("auth", token, {
 		httpOnly: true,
-		secure: false,
-		sameSite: "strict",
+		secure: true,
+		sameSite: "none",
 		maxAge: 10 * 24 * 60 * 60 * 1000,
 	});
 };
