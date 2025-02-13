@@ -118,4 +118,9 @@ export const updateEvent = (formData, eventId) =>
 export const fetchRoles = () => axios.get(`${BASE_URL}/auth/check-role`).then((res) => res.data);
 
 export const sendMessage = (message, groupId) =>
-	axios.post("${BASE_URL}/message/send", { message, groupId }, { withCredentials: true });
+	axios.post(`${BASE_URL}/message/send`, { message, groupId }, { withCredentials: true });
+
+export const setCookie = () =>
+	axios.get(`${BASE_URL}/test-cookie`, {
+		withCredentials: true,
+	});

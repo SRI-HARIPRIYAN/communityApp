@@ -3,6 +3,8 @@ import Header from "../components/Header.jsx";
 import ContactForm from "../components/ContactForm.jsx";
 import { FaLinkedin } from "react-icons/fa";
 import { MdOutlineSupportAgent } from "react-icons/md";
+import { Mutation, useMutation } from "@tanstack/react-query";
+import { setCookie } from "../services/api.js";
 const About = () => {
 	return (
 		<div className="text-white min-h-screen p-2">
@@ -17,6 +19,7 @@ const About = () => {
 					executing events seamlessly.
 				</p>
 			</section>
+
 			<hr className="w-3/5 md:w-2/5 mx-auto opacity-55 my-7 md:my-10 border-gray-400 border-[1.5px]" />
 			<section className="px-4 pt-2 text-center flex flex-col gap-3">
 				<h2 className="font-bold text-3xl sm:text-[32px] md:text-[40px] text-blue-400">
