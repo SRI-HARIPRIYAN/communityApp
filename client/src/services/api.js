@@ -75,15 +75,6 @@ export const fetchChat = async (groupid) => {
 	return axios.get(`${BASE_URL}/message/${groupid}`);
 };
 
-//attendance endpoints
-export const getAttendances = async (eventId) => {
-	return axios.get(`${BASE_URL}/attendance/${eventId}`).then((res) => res.data);
-};
-export const checkAttendance = async ({ eventId, decodedText }) => {
-	const response = await axios.post(`${BASE_URL}/attendance/scan/${eventId}`, decodedText);
-	return response.data;
-};
-
 export const request = async (data) => {
 	return axios.post(`${BASE_URL}/group/request`, data, { withCredentials: true });
 };
@@ -119,8 +110,3 @@ export const fetchRoles = () => axios.get(`${BASE_URL}/auth/check-role`).then((r
 
 export const sendMessage = (message, groupId) =>
 	axios.post(`${BASE_URL}/message/send`, { message, groupId }, { withCredentials: true });
-
-export const setCookie = () =>
-	axios.get(`${BASE_URL}/test-cookie`, {
-		withCredentials: true,
-	});

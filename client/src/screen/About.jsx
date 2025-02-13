@@ -4,7 +4,6 @@ import ContactForm from "../components/ContactForm.jsx";
 import { FaLinkedin } from "react-icons/fa";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { Mutation, useMutation } from "@tanstack/react-query";
-import { setCookie } from "../services/api.js";
 const About = () => {
 	return (
 		<div className="text-white min-h-screen p-2">

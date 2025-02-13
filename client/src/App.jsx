@@ -1,42 +1,43 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Events from "./screen/Events";
-import Event from "./screen/Event";
-import Login from "./screen/Login";
-import Signup from "./screen/Signup";
-import Group from "./screen/Group";
-import GetStarted from "./screen/GetStarted";
-import Attendancepage from "./screen/Attendancepage";
-import Dashboard from "./screen/Dashboard";
-import CreateEvents from "./screen/CreateEvents";
-import PaymentPage from "./screen/PaymentPage";
-import EditEvents from "./screen/EditEvents";
-import RequestComponent from "./components/RequestComponent";
-import Request from "./screen/Request";
-import About from "./screen/About";
+import { lazy } from "react";
+import Spinner from "./components/Spinner";
+const Events = lazy(() => import("./screen/Events"));
+const Event = lazy(() => import("./screen/Event"));
+const Login = lazy(() => import("./screen/Login"));
+const Signup = lazy(() => import("./screen/Signup"));
+const Group = lazy(() => import("./screen/Group"));
+const GetStarted = lazy(() => import("./screen/GetStarted"));
+const Dashboard = lazy(() => import("./screen/Dashboard"));
+const CreateEvents = lazy(() => import("./screen/CreateEvents"));
+const PaymentPage = lazy(() => import("./screen/PaymentPage"));
+const EditEvents = lazy(() => import("./screen/EditEvents"));
+const Request = lazy(() => import("./screen/Request"));
+const About = lazy(() => import("./screen/About"));
 
 const App = () => {
 	return (
-		<Router>
-			<div className="max-w-screen-wide bg-background mx-auto">
-				<Routes>
-					<Route path="/" element={<GetStarted />} />
-					<Route path="/events" element={<Events />} />
-					<Route path="/events/:eventId" element={<Event />} />
-					<Route path="/chats" element={<Group />} />
-					<Route path="/create-events" element={<CreateEvents />} />
-					<Route path="/updateEvent/:eventId" element={<EditEvents />} />
-					<Route path="/dashboard" element={<Dashboard />} />
-					<Route path="/request" element={<Request />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/signup" element={<Signup />} />
-					<Route path="/events/:eventId/attendance/:title" element={<Attendancepage />} />
-					<Route path="/payments/:eventId" element={<PaymentPage />} />
-					<Route path="/about" element={<About />} />
-					<Route path="*" element={<div>Not Found</div>} />
-				</Routes>
-			</div>
-		</Router>
+		<Suspense fallback={<Spinner />}>
+			<Router>
+				<div className="max-w-screen-wide bg-background mx-auto">
+					<Routes>
+						<Route path="/" element={<GetStarted />} />
+						<Route path="/events" element={<Events />} />
+						<Route path="/events/:eventId" element={<Event />} />
+						<Route path="/chats" element={<Group />} />
+						<Route path="/create-events" element={<CreateEvents />} />
+						<Route path="/updateEvent/:eventId" element={<EditEvents />} />
+						<Route path="/dashboard" element={<Dashboard />} />
+						<Route path="/request" element={<Request />} />
+						<Route path="/login" element={<Login />} />
+						<Route path="/signup" element={<Signup />} />
+						<Route path="/payments/:eventId" element={<PaymentPage />} />
+						<Route path="/about" element={<About />} />
+						<Route path="*" element={<div>Not Found</div>} />
+					</Routes>
+				</div>
+			</Router>
+		</Suspense>
 	);
 };
 

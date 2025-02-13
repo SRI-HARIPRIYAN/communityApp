@@ -1,11 +1,11 @@
-import { useState } from "react";
-import Profile from "../components/Profile";
-import MyEvents from "../components/MyEvents";
+import { lazy, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import { LuCircleArrowLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import MyGroups from "../components/MyGroups";
-import RequestComponent from "../components/RequestComponent";
-import { ToastContainer } from "react-toastify";
+const MyGroups = lazy(() => import("../components/MyGroups"));
+const RequestComponent = lazy(() => import("../components/RequestComponent"));
+const Profile = lazy(() => import("../components/Profile"));
+
 const tabs = [
 	{ name: "Profile", path: "/tab=profile" },
 	{ name: "Groups", path: "/tab=groups" },
